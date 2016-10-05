@@ -1,0 +1,22 @@
+# ---
+# These lines can be very useful if the image you're pulling doesn't support
+# the required locale (here's looking at you, Alpine Linux)
+# ---
+# This script will set everything to UTF-8. 
+# If you require something different, then please change all references to UTF-8 in this file
+# ---
+
+# Install program to configure locales
+RUN apt-get update 
+RUN apt-get install -y locales
+RUN dpkg-reconfigure locales && \
+  locale-gen --purge C.UTF-8 && \
+  /usr/sbin/update-locale LANG=C.UTF-8
+
+# Install needed default locale for Makefly
+RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
+
+# Set default locale for the environment
+ENV LC_ALL C.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
